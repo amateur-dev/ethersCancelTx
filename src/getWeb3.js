@@ -19,8 +19,9 @@ const getWeb3 = () =>
       // Legacy dapp browsers...
       else if (window.web3) {
         // Use Mist/MetaMask's provider.
-        const web3 = window.web3;
+        const web3 = new Web3(window.web3);
         console.log("Injected web3 detected.");
+        console.log(`web3 version = ${web3.version}`);
         resolve(web3);
       }
       // Fallback to localhost; use dev console port by default...
