@@ -22,6 +22,8 @@ class App extends Component {
       let provider = new ethers.providers.Web3Provider(web3.currentProvider);
       
       var signer = provider.getSigner();
+      var address = await signer.getAddress();
+      console.log(address);
       this.setState({provider, signer})
       let nonce = await provider.getTransactionCount(accounts[0]);
       this.setState({nonce})
