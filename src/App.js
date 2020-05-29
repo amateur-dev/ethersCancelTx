@@ -2,19 +2,29 @@ import React, { Component } from "react";
 import getWeb3 from "./getWeb3";
 import { ethers } from 'ethers';
 
-
 import "./App.css";
 
 class App extends Component {
-  state = { web3: null, accounts: null, provider: null, nonce: null, signer: null};
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+    this.getweb3function = this.getweb3function.bind(this);
+    this.state = { web3: null, accounts: null, provider: null, nonce: null, signer: null};
+  }
+  
+  handleClick() {
+    alert('Click happened');
+  }
 
-  componentDidMount = async () => {
+  async getweb3function() {
     try {
+
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
 
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
+      
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
@@ -27,8 +37,7 @@ class App extends Component {
       this.setState({provider, signer})
       let nonce = await provider.getTransactionCount(accounts[0]);
       this.setState({nonce})
-      let signature = await signer.signMessage("Hello world");
-      console.log(signature);
+      
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -40,7 +49,7 @@ class App extends Component {
 
   render() {
     if (!this.state.web3) {
-      return <div>Loading Web3 and accounts</div>;
+      return <div><button className="btn btn-secondary" onClick={() => this.getweb3function()} >Whats up</button></div>;
     }
     return (
       <div className="App">

@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@toruslabs/torus-embed": "^1.4.4",
     "react": "16.11.0",
+    "react-autobind": "^1.0.6",
     "react-dom": "16.11.0",
     "react-scripts": "3.2.0",
-    "web3": "1.2.2"
+    "web3": "1.2.2",
+    "web3modal": "^1.6.3"
   },
   "scripts": {
     "start": "react-scripts start",
