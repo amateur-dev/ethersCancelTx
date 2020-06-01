@@ -1,63 +1,60 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import getWeb3 from "./getWeb3";
 import { ethers } from 'ethers';
 
 import "./App.css";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-    this.getweb3function = this.getweb3function.bind(this);
-    this.state = { web3: null, accounts: null, provider: null, nonce: null, signer: null};
-  }
-  
-  handleClick() {
-    alert('Click happened');
-  }
+function App() {
+  const [accounts, setAccounts] = useState(null);
+  const [web3, setWeb3] = useState(null);
+  const [signer, setSigner] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [nonce, setNonce] = useState(null);
 
-  async getweb3function() {
-    try {
+  async function getweb3function() {
 
-      // Get network provider and web3 instance.
-      const web3 = await getWeb3();
+        try {
 
-      // Use web3 to get the user's accounts.
-      const accounts = await web3.eth.getAccounts();
-      
+          // Get network provider and web3 instance.
+          const web3 = await getWeb3();
+          setWeb3(web3);
 
-      // Set web3, accounts, and contract to the state, and then proceed with an
-      // example of interacting with the contract's methods.
-      this.setState({ web3, accounts });
-      let provider = new ethers.providers.Web3Provider(web3.currentProvider);
-      
-      var signer = provider.getSigner();
-      var address = await signer.getAddress();
-      console.log(address);
-      this.setState({provider, signer})
-      let nonce = await provider.getTransactionCount(accounts[0]);
-      this.setState({nonce})
-      
-    } catch (error) {
-      // Catch any errors for any of the above operations.
-      alert(
-        `Failed to load web3, accounts`
-      );
-      console.error(error);
-    }
-  };
+          // Use web3 to get the user's accounts.
+          const accounts = await web3.eth.getAccounts();
+          setAccounts(accounts);
 
-  render() {
-    if (!this.state.web3) {
-      return <div><button className="btn btn-secondary" onClick={() => this.getweb3function()} >Whats up</button></div>;
-    }
+          let provider = new ethers.providers.Web3Provider(web3.currentProvider);
+          var signer = provider.getSigner();
+          setSigner(signer);
+          // Getting the address of the user
+          var address = await signer.getAddress();
+          setAddress(address);
+          // Getting the nonce of the address
+          let nonce = await provider.getTransactionCount(accounts[0]);
+          setNonce(nonce);
+        } catch (error) {
+            console.error(error);
+        }
+      };
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {window.ethereum.autoRefreshOnNetworkChange = false;});
+
+  if (accounts == null) {
+    return(
+      <div>
+      <button onClick={() => getweb3function()}>
+        Connect Accounts
+      </button>
+    </div>
+    )
+  } else {
     return (
-      <div className="App">
-        <h1>Good to Go!</h1>
-        <div>You account is {this.state.accounts}</div>
-        <div>{this.state.nonce}</div>
-      </div>
-    );
+      <div>
+        <p>Thank you for connecting your account</p>
+        <p>Your current account is {accounts}</p>
+        <p>Your current nonce is {nonce}</p>
+    </div>
+    )
   }
 }
 
