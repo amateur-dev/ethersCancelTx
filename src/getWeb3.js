@@ -2,8 +2,31 @@ import Web3 from "web3";
 import Web3Modal from "web3modal";
 
 import Torus from "@toruslabs/torus-embed";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import Portis from "@portis/web3";
+import Authereum from "authereum";
+
+console.log(process.env.REACT_APP_INFURA_APIKEY);
+console.log(process.env.REACT_APP_PORTIS_APIKEY);
+
+
 
 const providerOptions = {
+  authereum: {
+    package: Authereum // required
+  },
+  portis: {
+    package: Portis, // required
+    options: {
+      id: process.env.REACT_APP_PORTIS_APIKEY // required
+    }
+  },
+  walletconnect: {
+    package: WalletConnectProvider, // required
+    options: {
+      infuraId: process.env.REACT_APP_INFURA_APIKEY // required
+    }
+  },
   torus: {
     package: Torus, // required
     options: {
