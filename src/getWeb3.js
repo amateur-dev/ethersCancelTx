@@ -6,8 +6,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import Portis from "@portis/web3";
 import Authereum from "authereum";
 
-console.log(process.env.REACT_APP_INFURA_APIKEY);
-console.log(process.env.REACT_APP_PORTIS_APIKEY);
+require('dotenv').config()
 
 
 

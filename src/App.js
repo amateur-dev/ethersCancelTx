@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import getWeb3 from "./getWeb3";
 import { ethers } from 'ethers';
 
+
+
 import "./App.css";
 
 function App() {
@@ -10,6 +12,8 @@ function App() {
   const [signer, setSigner] = useState(null);
   const [address, setAddress] = useState(null);
   const [nonce, setNonce] = useState(null);
+
+  
 
   async function getweb3function() {
 
@@ -37,7 +41,8 @@ function App() {
         }
       };
   // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {window.ethereum.autoRefreshOnNetworkChange = false;});
+  useEffect(() => {
+    window.ethereum.autoRefreshOnNetworkChange = false;});
 
   if (accounts == null) {
     return(
