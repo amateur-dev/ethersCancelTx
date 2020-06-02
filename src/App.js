@@ -13,7 +13,11 @@ function App() {
   const [address, setAddress] = useState(null);
   const [nonce, setNonce] = useState(null);
 
-  
+  const disconnect = () => {
+    setAccounts(null);
+    setNonce(null);
+
+  }
 
   async function getweb3function() {
 
@@ -58,6 +62,9 @@ function App() {
         <p>Thank you for connecting your account</p>
         <p>Your current account is {accounts}</p>
         <p>Your current nonce is {nonce}</p>
+        <button onClick={() => disconnect()}>
+        Disconnect
+        </button>
     </div>
     )
   }
