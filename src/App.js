@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import getWeb3 from "./getWeb3";
 import { ethers } from 'ethers';
-
-
+import Button from 'react-bootstrap/Button';
+import Jumbotron from 'react-bootstrap/Jumbotron';
+import Container from 'react-bootstrap/Container';
 
 import "./App.css";
 
@@ -50,22 +51,26 @@ function App() {
 
   if (accounts == null) {
     return(
-      <div>
-      <button onClick={() => getweb3function()}>
+      <Container className="p-3">
+        <Jumbotron>
+          <h1 className="header">Welcome To ETH Cancel Tx Provider</h1>
+        </Jumbotron>
+        <Button onClick={() => getweb3function()}>
         Connect Accounts
-      </button>
-    </div>
+      </Button>
+      </Container>
+      
     )
   } else {
     return (
-      <div>
+      <Container className="p-3">
         <p>Thank you for connecting your account</p>
         <p>Your current account is {accounts}</p>
-        <p>Your current nonce is {nonce}</p>
-        <button onClick={() => disconnect()}>
+        <p>The nonce of your last confirmed tx is {nonce}</p>
+        <Button onClick={() => disconnect()}>
         Disconnect
-        </button>
-    </div>
+        </Button>
+    </Container>
     )
   }
 }
