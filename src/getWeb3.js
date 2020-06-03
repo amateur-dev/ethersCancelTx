@@ -39,7 +39,7 @@ const providerOptions = {
 
 const web3Modal = new Web3Modal({
   network: "mainnet", // optional
-  cacheProvider: false, // optional
+  cacheProvider: true, // optional
   providerOptions, // required
   theme: {
     background: "rgb(39, 49, 56)",
@@ -53,6 +53,9 @@ const web3Modal = new Web3Modal({
 const getWeb3 = async () => {
   // Modern dapp browsers...
   if (window.ethereum) {
+    if (web3Modal.cachedProvider) {
+      await web3Modal.connect();
+    }
     const provider = await web3Modal.connect();
     const web3 = new Web3(provider);
     try {
