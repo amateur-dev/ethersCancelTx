@@ -1,31 +1,77 @@
 import Web3 from "web3";
+import Web3Modal from "web3modal";
 
-const getWeb3 = () =>
-  new Promise((resolve, reject) => {
-    // Wait for loading completion to avoid race conditions with web3 injection timing.
-    window.addEventListener("load", async () => {
-      // Modern dapp browsers...
-      if (window.ethereum) {
-        const web3 = new Web3(window.ethereum);
-        window.ethereum.autoRefreshOnNetworkChange = false;
-        try {
-          // Request account access if needed
-          await window.ethereum.enable();
-          
-          // Acccounts now exposed
-          resolve(web3);
-        } catch (error) {
-          reject(error);
-        }
+import Torus from "@toruslabs/torus-embed";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import Portis from "@portis/web3";
+import Authereum from "authereum";
+
+require('dotenv').config()
+
+
+
+const providerOptions = {
+  authereum: {
+    package: Authereum // required
+  },
+  portis: {
+    package: Portis, // required
+    options: {
+      id: process.env.REACT_APP_PORTIS_APIKEY // required
+    }
+  },
+  walletconnect: {
+    package: WalletConnectProvider, // required
+    options: {
+      infuraId: process.env.REACT_APP_INFURA_APIKEY // required
+    }
+  },
+  torus: {
+    package: Torus, // required
+    options: {
+      networkParams: {
+      },
+      config: {
       }
-      // Legacy dapp browsers...
-      else if (window.web3) {
-        // Use Mist/MetaMask's provider.
-        const web3 = new Web3(window.web3);
-        resolve(web3);
-      }
-      window.ethereum.autoRefreshOnNetworkChange = false;
-    });
-  });
+    }
+  }
+};
+
+const web3Modal = new Web3Modal({
+  network: "mainnet", // optional
+  cacheProvider: false, // optional
+  providerOptions, // required
+  theme: {
+    background: "rgb(39, 49, 56)",
+    main: "rgb(199, 199, 199)",
+    secondary: "rgb(136, 136, 136)",
+    border: "rgba(195, 195, 195, 0.14)",
+    hover: "rgb(16, 26, 32)"
+  }
+});
+
+const getWeb3 = async () => {
+  // Modern dapp browsers...
+  if (window.ethereum) {
+    const provider = await web3Modal.connect();
+    const web3 = new Web3(provider);
+    try {
+      // Request account access if needed
+      await window.ethereum.enable();
+      // Acccounts now exposed
+      return (web3);
+    } catch (error) {
+      throw (error);
+    }
+  }
+  // Legacy dapp browsers...
+  else if (window.web3) {
+    // Use Mist/MetaMask's provider.
+    const provider = await web3Modal.connect();
+    const web3 = new Web3(provider);
+    return web3;
+  }
+}
+
 
 export default getWeb3;
