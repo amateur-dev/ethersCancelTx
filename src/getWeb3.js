@@ -70,7 +70,7 @@ const getWeb3 = async () => {
     return (web3);
   }
   // Legacy dapp browsers...
-  else if (window.web3) {
+  else {
     console.log("trying");
     web3Modal.disableInjectedProvider = true;
     // Use Mist/MetaMask's provider.
