@@ -42,8 +42,9 @@ const getWeb3 = async () => {
   
   const web3Modal = new Web3Modal({
     network: "mainnet", // optional
-    cacheProvider: false, // optional
+    cacheProvider: true, // optional
     providerOptions, // required
+    disableInjectedProvider: false,
     theme: {
       background: "rgb(39, 49, 56)",
       main: "rgb(199, 199, 199)",

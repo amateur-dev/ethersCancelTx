@@ -34,10 +34,11 @@ function App() {
   const [nonce, setNonce] = useState(null);
   
   const disconnect = () => {
+    web3Modal.clearCachedProvider();
     setAccounts(null);
     setNonce(null);
     localStorage.clear();
-    web3Modal.clearCachedProvider();
+    
   }
 
   useEffect(()=>{
