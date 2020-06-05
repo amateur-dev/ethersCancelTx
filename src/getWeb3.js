@@ -5,15 +5,19 @@ import Torus from "@toruslabs/torus-embed";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Portis from "@portis/web3";
 import Authereum from "authereum";
+import Fortmatic from "fortmatic";
 
 require('dotenv').config()
-
-
-
 
 const getWeb3 = async () => {
   
   const providerOptions = {
+    fortmatic: {
+      package: Fortmatic, // required
+      options: {
+        key: process.env.REACT_APP_FORTMATIC_APIKEY // required
+      }
+    },
     authereum: {
       package: Authereum // required
     },
@@ -45,34 +49,30 @@ const getWeb3 = async () => {
     cacheProvider: true, // optional
     providerOptions, // required
     disableInjectedProvider: false,
-    theme: {
-      background: "rgb(39, 49, 56)",
-      main: "rgb(199, 199, 199)",
-      secondary: "rgb(136, 136, 136)",
-      border: "rgba(195, 195, 195, 0.14)",
-      hover: "rgb(16, 26, 32)"
-    }
+    // theme: {
+    //   background: "rgb(39, 49, 56)",
+    //   main: "rgb(199, 199, 199)",
+    //   secondary: "rgb(136, 136, 136)",
+    //   border: "rgba(195, 195, 195, 0.14)",
+    //   hover: "rgb(16, 26, 32)"
+    // }
   })
 
   // Modern dapp browsers...
   if (window.ethereum) {
+    console.log("object");
     if (web3Modal.cachedProvider) {
-      console.log("trying")
       await web3Modal.connect();
     }
     const provider = await web3Modal.connect();
+    console.log(provider);
     const web3 = new Web3(provider);
-    try {
-      // Request account access if needed
-      await window.ethereum.enable();
-      // Acccounts now exposed
-      return (web3);
-    } catch (error) {
-      throw (error);
-    }
+    return (web3);
   }
   // Legacy dapp browsers...
   else if (window.web3) {
+    console.log("trying");
+    web3Modal.disableInjectedProvider = true;
     // Use Mist/MetaMask's provider.
     const provider = await web3Modal.connect();
     const web3 = new Web3(provider);
