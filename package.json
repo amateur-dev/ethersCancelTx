@@ -19,7 +19,7 @@
     "start": "^5.1.0",
     "web3": "1.2.2",
     "web3modal": "^1.6.3",
-    "webpack": "4.41.0"
+    "webpack": "5.94.0"
   },
   "scripts": {
     "start": "react-scripts start",
